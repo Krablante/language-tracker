@@ -1,0 +1,28 @@
+/* Добавьте эти стили в src/index.css */
+
+.tabs {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  justify-content: center;
+}
+
+.tab {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ccc;
+  border-radius: 9999px;
+  background: #f5f5f5;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.tab:hover {
+  background: #e0e0e0;
+}
+
+.tab--active {
+  background: #4a90e2;
+  color: white;
+  border-color: #4a90e2;
+}
