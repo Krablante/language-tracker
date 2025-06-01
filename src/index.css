@@ -1,28 +1,401 @@
-/* Добавьте эти стили в src/index.css */
+/* src/index.css */
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   1) Определяем CSS‐переменные для светлой и тёмной темы
+   2) Привязываем data-theme="light"/"dark" к <html>
+   3) Стили для header, кнопок, контейнеров, списков и т. д.
+───────────────────────────────────────────────────────────────────────────── */
+
+/* --- ОБЩИЕ ПЕРЕМЕННЫЕ ТЕМОК (LIGHT) --- */
+:root {
+  /* Фон приложения */
+  --bg-color: #f0f2f5;
+  /* Основной текст */
+  --text-color: #333;
+  /* Второстепенный текст (например, “Нет лекций”) */
+  --subtext-color: #666;
+  /* Фон карточек */
+  --card-bg: #ffffff;
+  /* Тень карточек */
+  --card-shadow: rgba(0, 0, 0, 0.1);
+  /* Цвет границ, инпутов */
+  --border-color: #ccc;
+  /* Цвет фокуса инпутов */
+  --border-focus-color: #4a90e2;
+  /* Фон кнопок */
+  --btn-bg: #4a90e2;
+  /* Ховер-контраст для кнопок */
+  --btn-bg-hover: #357ab8;
+  /* Фон полей ввода */
+  --input-bg: #fff;
+  /* Цвет кнопки удаления (крестик) */
+  --delete-color: #e74c3c;
+  --delete-hover-color: #c0392b;
+}
+
+/* --- ПЕРЕМЕННЫЕ ТЕМЫ (DARK) --- */
+html[data-theme="dark"] {
+  /* Фон приложения (тёмно-серый) */
+  --bg-color: #1e1e1e;
+  /* Основной текст (светло-серый) */
+  --text-color: #e0e0e0;
+  /* Второстепенный текст (менее яркий) */
+  --subtext-color: #b0b3b8;
+  /* Фон карточек (ещё более тёмный) */
+  --card-bg: #2a2a2a;
+  /* Тень для карточек */
+  --card-shadow: rgba(0, 0, 0, 0.5);
+  /* Границы инпутов / карточек (очень тонкие) */
+  --border-color: #555;
+  /* Цвет фокуса инпутов */
+  --border-focus-color: #888;
+  /* Фон основных кнопок («A») */
+  --btn-bg: #555;
+  /* Ховер-контраст для кнопок */
+  --btn-bg-hover: #444;
+  /* Фон полей ввода */
+  --input-bg: #3a3b3c;
+  /* Цвет кнопки удаления (крестик) */
+  --delete-color: #e74c3c;
+  --delete-hover-color: #c0392b;
+}
+
+/* --- БАЗОВЫЕ СТИЛИ --- */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg-color);
+  color: var(--text-color);
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  background: none;
+  border: none;
+}
+
+img {
+  display: block;
+}
+
+/* --- КОНТЕЙНЕР --- */
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem 1rem 2rem;
+}
+
+/* --- ШАПКА ПРИЛОЖЕНИЯ --- */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.app-title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+/* --- КОНТРОЛЫ В ШАПКЕ (кнопка темы + аватар) --- */
+.header-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Кнопка переключения темы */
+.theme-btn {
+  background: transparent;
+  border-radius: 50%;
+  font-size: 1.4rem;
+  color: var(--text-color);
+  padding: 0.3rem;
+  transition: background 0.2s, color 0.2s;
+}
+
+.theme-btn:hover {
+  background: var(--card-bg);
+}
+
+/* Аватарка (кнопка) */
+.avatar-btn {
+  padding: 0;
+}
+
+.avatar-img {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border-color);
+  transition: border-color 0.2s;
+}
+
+.avatar-img:hover {
+  border-color: var(--btn-bg);
+}
+
+/* Если у пользователя нет photoURL, показываем плейсхолдер-аватар */
+.avatar-placeholder {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--border-color);
+}
+
+/* Если вдруг у юзера нет аватара, показываем текстовую кнопку “Выйти” */
+.signout-text-btn {
+  background: var(--btn-bg);
+  color: #fff;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.signout-text-btn:hover {
+  background: var(--btn-bg-hover);
+}
+
+/* Ошибки */
+.error-message {
+  margin-top: 0.5rem;
+  color: #e74c3c;
+}
+
+/* --- ТАБЫ ЯЗЫКОВ --- */
 .tabs {
   display: flex;
   gap: 1rem;
-  margin-top: 1rem;
+  margin: 1rem 0;
   justify-content: center;
 }
 
 .tab {
-  padding: 0.5rem 1rem;
-  border: 1px solid #ccc;
+  padding: 0.5rem 1.2rem;
+  border: 1px solid var(--border-color);
   border-radius: 9999px;
-  background: #f5f5f5;
-  cursor: pointer;
+  background: var(--card-bg);
+  color: var(--text-color);
   font-weight: bold;
-  transition: background 0.2s, border-color 0.2s;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
 }
 
 .tab:hover {
-  background: #e0e0e0;
+  background: var(--border-focus-color);
+  color: #fff;
 }
 
 .tab--active {
-  background: #4a90e2;
-  color: white;
-  border-color: #4a90e2;
+  background: var(--btn-bg);
+  border-color: var(--btn-bg);
+  color: #fff;
+}
+
+/* --- ФОРМА ДОБАВЛЕНИЯ (CourseForm, LectureForm) --- */
+.course-form,
+.lecture-form {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.course-form input,
+.lecture-form input {
+  flex: 1;
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  background: var(--input-bg);
+  color: var(--text-color);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.course-form input:focus,
+.lecture-form input:focus {
+  outline: none;
+  border-color: var(--border-focus-color);
+}
+
+/* Кнопка “A” вместо “Добавить” */
+.course-form button,
+.lecture-form button {
+  background: var(--btn-bg);
+  color: #fff;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s;
+}
+
+.course-form button:hover,
+.lecture-form button:hover {
+  background: var(--btn-bg-hover);
+}
+
+/* --- СПИСОК КУРСОВ --- */
+.course-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0 2px 5px var(--card-shadow);
+  margin-bottom: 1.5rem;
+  overflow: hidden;
+}
+
+.course-item .course-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.course-item .course-header a,
+.course-item .course-header span {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.course-item .course-header a:hover {
+  text-decoration: underline;
+}
+
+.course-item .course-header button {
+  font-size: 1.4rem;
+  background: transparent;
+  color: var(--delete-color);
+  transition: color 0.2s;
+}
+
+.course-item .course-header button:hover {
+  color: var(--delete-hover-color);
+}
+
+/* --- СПИСОК ЛЕКЦИЙ --- */
+.lecture-item {
+  background: var(--input-bg);
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  margin: 0.5rem 1rem;
+  transition: background 0.2s;
+}
+
+.lecture-item:hover {
+  background: var(--border-color);
+}
+
+.lecture-item .lecture-row {
+  display: flex;
+  align-items: center;
+}
+
+.lecture-item .lecture-row button {
+  background: transparent;
+  border: none;
+  margin-right: 0.6rem;
+  font-size: 1.1rem;
+  color: var(--text-color);
+  transition: color 0.2s;
+}
+
+.lecture-item .lecture-row button:hover {
+  color: var(--btn-bg);
+}
+
+.lecture-item .lecture-row span {
+  flex: 1;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.lecture-item .lecture-row .delete-lecture-btn {
+  margin-left: 0.5rem;
+  font-size: 1.2rem;
+  color: var(--delete-color);
+}
+
+.lecture-item .lecture-row .delete-lecture-btn:hover {
+  color: var(--delete-hover-color);
+}
+
+/* Описание лекции */
+.lecture-item .lecture-description {
+  margin-top: 0.5rem;
+  padding-left: 1.7rem;
+  color: var(--subtext-color);
+  font-size: 0.9rem;
+}
+
+/* --- ПУСТЫЕ СОСТОЯНИЯ --- */
+.course-empty,
+.lecture-empty {
+  text-align: center;
+  margin-top: 1rem;
+  opacity: 0.6;
+  color: var(--subtext-color);
+}
+
+/* --- МОБИЛЬНЫЕ СТИЛИ --- */
+@media (max-width: 480px) {
+  .app-title {
+    font-size: 1.6rem;
+  }
+  .tabs {
+    gap: 0.5rem;
+  }
+  .tab {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+  .course-form,
+  .lecture-form {
+    flex-direction: column;
+  }
+  .course-form button,
+  .lecture-form button {
+    width: 100%;
+  }
+  .course-form input,
+  .lecture-form input {
+    width: 100%;
+  }
+  .course-item {
+    margin-bottom: 1rem;
+  }
+  .course-item .course-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  .header-controls {
+    gap: 0.3rem;
+  }
+  .theme-btn {
+    font-size: 1.2rem;
+  }
+  .avatar-img,
+  .avatar-placeholder {
+    width: 30px;
+    height: 30px;
+  }
 }

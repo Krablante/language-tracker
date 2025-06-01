@@ -1,31 +1,41 @@
 // src/MainApp.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Tabs from './components/Tabs';
 import CourseForm from './components/CourseForm';
 import CoursesList from './components/CoursesList';
 import { Language, Course, Lecture } from './types';
 import { useCourses } from './hooks/useCourses';
 import { useLectures } from './hooks/useLectures';
+import { useAuth } from './contexts/AuthContext';
 
 interface MainAppProps {
   onSignOut: () => void;
 }
 
 const MainApp: React.FC<MainAppProps> = ({ onSignOut }) => {
-  // Здесь мы предполагаем, что пользователь точно залогинен,
-  // потому что AppInner пропустил рендер только после авторизации.
+  // 1) Получаем текущего пользователя из контекста
+  const { user } = useAuth();
 
-  // 1) Вызываем хуки на верхнем уровне (чтобы ESLint не ругался)
+  // 2) Хуки для курсов и лекций
   const { courses, addCourse, removeCourse, updateCourse, error: courseError } = useCourses();
   const { lectures, addLecture, removeLecture, updateLecture, error: lectureError } = useLectures();
 
-  // 2) Локальный стейт для переключения вкладок (EN/FR)
+  // 3) Тема (light/dark) с сохранением в localStorage
+  const [theme, setTheme] = useState<'light' | 'dark'>(
+    (localStorage.getItem('theme') as 'light' | 'dark') || 'light'
+  );
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }, [theme]);
+
+  // 4) Выбранный язык (EN / FR)
   const [activeLanguage, setActiveLanguage] = useState<Language>('eng');
 
-  // 3) Фильтруем курсы по выбранному языку
+  // 5) Фильтрация курсов по языку
   const filteredCourses = courses.filter((c: Course) => c.language === activeLanguage);
 
-  // 4) Группируем лекции по courseId
+  // 6) Группировка лекций по courseId
   const lecturesGrouped: Record<string, Lecture[]> = lectures.reduce((acc, lec) => {
     if (!acc[lec.courseId]) {
       acc[lec.courseId] = [];
@@ -34,7 +44,7 @@ const MainApp: React.FC<MainAppProps> = ({ onSignOut }) => {
     return acc;
   }, {} as Record<string, Lecture[]>);
 
-  // Сортируем лекции внутри каждой группы по createdAt DESC
+  // 7) Внутри каждой группы сортируем лекции по createdAt (DESC)
   Object.values(lecturesGrouped).forEach(arr => {
     arr.sort((a, b) => {
       const ta = a.createdAt?.seconds || 0;
@@ -44,37 +54,43 @@ const MainApp: React.FC<MainAppProps> = ({ onSignOut }) => {
   });
 
   return (
-    <div className="container" style={{ maxWidth: '800px', margin: '2rem auto', padding: '0 1rem' }}>
-      {/* Шапка: заголовок + кнопка выхода */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Language Tracker</h1>
-        <button
-          onClick={onSignOut}
-          style={{
-            border: 'none',
-            background: 'transparent',
-            cursor: 'pointer',
-            color: '#e74c3c',
-            fontSize: '1rem'
-          }}
-          title="Выйти"
-        >
-          Выйти
-        </button>
-      </div>
+    <div className="container">
+      {/* ─── ШАПКА ────────────────────────────────────────────────────────── */}
+      <header className="app-header">
+        <h1 className="app-title">Language Tracker</h1>
 
-      {/* Переключатель языков */}
+        <div className="header-controls">
+          {/* 1) Кнопка переключения темы */}
+          <button
+            className="theme-btn"
+            onClick={() => setTheme(prev => (prev === 'light' ? 'dark' : 'light'))}
+            aria-label={theme === 'light' ? 'Переключиться на тёмную тему' : 'Переключиться на светлую тему'}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+
+          {/* 2) Аватар пользователя */}
+          {user?.photoURL ? (
+            <button className="avatar-btn" onClick={onSignOut} title="Выйти из аккаунта">
+              <img src={user.photoURL} alt="User Avatar" className="avatar-img" />
+            </button>
+          ) : (
+            // Если у пользователя нет photoURL, рисуем кружок с буквой "G"
+            <button className="avatar-btn" onClick={onSignOut} title="Выйти из аккаунта">
+              <div className="avatar-placeholder">G</div>
+            </button>
+          )}
+        </div>
+      </header>
+
+      {/* ─── ТАБЫ ДЛЯ ЯЗЫКОВ ───────────────────────────────────────────────── */}
       <Tabs active={activeLanguage} onChange={setActiveLanguage} />
 
-      {/* Форма добавления нового курса */}
+      {/* ─── ФОРМА ДОБАВЛЕНИЯ НОВОГО КУРСА ───────────────────────────────────── */}
       <CourseForm onAdd={addCourse} language={activeLanguage} />
-      {courseError && (
-        <div style={{ color: 'red', marginTop: '0.5rem' }}>
-          Ошибка (курсы): {courseError}
-        </div>
-      )}
+      {courseError && <div className="error-message">Ошибка (курсы): {courseError}</div>}
 
-      {/* Список курсов и вложенных лекций */}
+      {/* ─── СПИСОК КУРСОВ + ВНУТРИ НИХ ЛЕКЦИИ ──────────────────────────────── */}
       <CoursesList
         courses={filteredCourses}
         lecturesGrouped={lecturesGrouped}
@@ -82,11 +98,7 @@ const MainApp: React.FC<MainAppProps> = ({ onSignOut }) => {
         onAddLecture={addLecture}
         onRemoveLecture={removeLecture}
       />
-      {lectureError && (
-        <div style={{ color: 'red', marginTop: '0.5rem' }}>
-          Ошибка (лекции): {lectureError}
-        </div>
-      )}
+      {lectureError && <div className="error-message">Ошибка (лекции): {lectureError}</div>}
     </div>
   );
 };

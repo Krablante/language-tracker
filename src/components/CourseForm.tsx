@@ -22,25 +22,22 @@ const CourseForm: React.FC<Props> = ({ onAdd, language }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="course-form" style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem' }}>
+    <form onSubmit={handleSubmit} className="course-form">
       <input
         type="text"
         placeholder="Название курса"
         value={title}
         onChange={e => setTitle(e.target.value)}
         required
-        style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
       />
       <input
         type="url"
         placeholder="Ссылка (опционально)"
         value={url}
         onChange={e => setUrl(e.target.value)}
-        style={{ flex: 1, padding: '0.5rem', borderRadius: '4px', border: '1px solid #ccc' }}
       />
-      <button type="submit" style={{ padding: '0.5rem 1rem', border: 'none', background: '#4a90e2', color: '#fff', borderRadius: '4px', cursor: 'pointer' }}>
-        Добавить
-      </button>
+      {/* Кнопка заменилась на круглую с буквой «A» */}
+      <button type="submit">A</button>
     </form>
   );
 };
