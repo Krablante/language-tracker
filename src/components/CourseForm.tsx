@@ -37,7 +37,9 @@ const CourseForm: React.FC<Props> = ({ onAdd, language }) => {
         onChange={e => setUrl(e.target.value)}
       />
       {/* Кнопка заменилась на круглую с буквой «A» */}
-      <button type="submit">A</button>
+      <button type="submit" className="submit-btn" title="Добавить курс">
+      A
+      </button>
     </form>
   );
 };

@@ -36,7 +36,9 @@ const LectureForm: React.FC<Props> = ({ courseId, onAdd }) => {
         onChange={e => setDescription(e.target.value)}
       />
       {/* Кнопка «A» */}
-      <button type="submit">A</button>
+      <button type="submit" className="submit-btn" title="Добавить лекцию">
+      A
+     </button>
     </form>
   );
 };
