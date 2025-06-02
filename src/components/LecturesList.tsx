@@ -24,7 +24,7 @@ const LecturesList: React.FC<Props> = ({ entries, onRemove }) => {
   return (
     <ul style={{ listStyle: 'none', padding: 0, marginTop: '0.5rem' }}>
       {entries.map(e => (
-        <li key={e.id} style={{ marginBottom: '0.75rem', background: '#fafafa', borderRadius: '4px', padding: '0.5rem' }} className="lecture-item">
+        <li key={e.id} className="lecture-item">
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <button
               onClick={() => toggleExpand(e.id)}
@@ -43,7 +43,7 @@ const LecturesList: React.FC<Props> = ({ entries, onRemove }) => {
             </button>
           </div>
           {expandedIds.has(e.id) && e.description && (
-            <div style={{ marginTop: '0.5rem', paddingLeft: '1.5rem', color: '#555', fontSize: '0.9rem' }}>
+            <div style={{ marginTop: '0.5rem', paddingLeft: '0rem', color: '#DCDCDC', fontSize: '0.9rem' }}>
               {e.description}
             </div>
           )}

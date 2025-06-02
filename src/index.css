@@ -307,12 +307,12 @@ html[data-theme="light"] .tab:hover {
   background: var(--card-bg);
   border-radius: 6px;
   margin: 0.5rem 1rem;
-  padding: 0.8rem 1rem;
+  padding: 0.5rem;
   box-shadow: 0 1px 3px var(--card-shadow);
   transition: background 0.2s;
 }
 .lecture-item:hover {
-  background: var(--border-focus);
+  
 }
 .lecture-item .lecture-row {
   display: flex;
