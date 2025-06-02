@@ -311,9 +311,7 @@ html[data-theme="light"] .tab:hover {
   box-shadow: 0 1px 3px var(--card-shadow);
   transition: background 0.2s;
 }
-.lecture-item:hover {
-  
-}
+
 .lecture-item .lecture-row {
   display: flex;
   align-items: center;
@@ -363,7 +361,7 @@ html[data-theme="light"] .tab:hover {
 /* --- МОБИЛЬНЫЕ СТИЛИ --- */
 @media (max-width: 480px) {
   .app-title {
-    font-size: 1.6rem;
+    font-size: 1.4rem;
   }
   .theme-btn {
     font-size: 1.3rem;
@@ -407,5 +405,53 @@ html[data-theme="light"] .tab:hover {
     width: 30px;
     height: 30px;
   }
+  .course-item .course-header a,
+  .course-item .course-header span {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+}
 }
 
+
+/* ── кнопка-стрелка ───────────────────────────────────── */
+.course-toggle-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+}
+
+.course-toggle-btn:hover {
+  color: var(--btn-bg);
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.25s ease;
+}
+
+.arrow--open {
+  transform: rotate(90deg);
+}
+
+/* ── плавное раскрытие ───────────────────────────────── */
+.course-content {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, opacity 0.3s ease;
+}
+
+.course-content--open {
+  opacity: 1;            /* высота задаётся inline-style */
+}
+
+/* курсор захвата, когда таскаем */
+.course-item[style*="transform"] {
+  cursor: grabbing;
+}

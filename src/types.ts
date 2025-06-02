@@ -10,6 +10,7 @@ export interface Course {
   title: string;
   url?: string;
   language: Language;
+  order?: number;
   owner?: string;          // uid пользователя (который добавил курс)
   createdAt?: Timestamp;
 }

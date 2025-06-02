@@ -1,137 +1,96 @@
 # Language Tracker
 
-**Language Tracker** is a simple React + TypeScript application that helps you keep track of language courses and associated lectures. It uses Firebase for authentication (Google Sign-In) and Firestore as a backend to store data. The app supports light/dark theming and toggling between English and French tabs for organizing courses.
+**Language Tracker** is a lightweight React + TypeScript application for tracking language‑learning courses (English & French) and their lectures. It uses **Firebase** for Google authentication and Firestore as a realtime backend.
 
-## Features
+![Language Tracker Screenshot](public/logo.png)
 
-* **Google Authentication**: Secure sign-in with Google accounts.
-* **Course Management**: Create, read, update, and delete language courses.
-* **Lecture Management**: For each course, create, read, update, and delete individual lectures with optional descriptions.
-* **Dynamic Tabs**: Switch between English and French language tabs to filter courses by language.
-* **Theme Toggle**: Switch between light and dark modes; the preference is saved to `localStorage` and applied on reload.
-* **Responsive Design**: Works well on desktop and mobile devices.
+---
 
-## Demo
+## ✨ Key Features
 
-The application is deployed to Vercel and can be accessed at: [https://ltracker.vercel.app](https://ltracker.vercel.app)
+| Category      | Feature                                                                                                                                      |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Auth**      | Google Sign‑In (OAuth2)                                                                                                                      |
+| **Courses**   | • Add / edit / delete courses<br>• *Accordion* view – one course expanded at a time<br>• **Drag & Drop** re‑ordering (powered by `@dnd-kit`) |
+| **Lectures**  | Add / edit / delete lectures inside each course                                                                                              |
+| **UI / UX**   | Light / Dark themes, saved to `localStorage`                                                                                                 |
+| **Data Sync** | All changes are stored instantly in Firestore and reflected in real‑time on every device                                                     |
 
-## Getting Started
+---
 
-Follow these instructions to set up the project locally.
+## 🚀 Live Demo
+
+👉 [https://ltracker.vercel.app](https://ltracker.vercel.app)
+
+---
+
+## 🛠 Installation
 
 ### Prerequisites
 
-* Node.js (v14 or later)
-* npm (v6 or later)
+* **Node.js** ≥ 14<br>
+* **npm** ≥ 6
 
-### Installation Steps
+### Steps
 
-1. **Clone the repository**
+```bash
+# 1. Clone the repo
+$ git clone https://github.com/<your‑username>/language-tracker.git
+$ cd language-tracker
 
-   ```bash
-   git clone https://github.com/<your-username>/language-tracker.git
-   cd language-tracker
-   ```
+# 2. Install dependencies (incl. drag‑and‑drop libs)
+$ npm install
 
-2. **Install dependencies**
+# 3. Add Firebase credentials
+#    → copy your config into src/firebase.ts
 
-   ```bash
-   npm install
-   ```
-
-3. **Configure Firebase**
-
-   * Go to the [Firebase Console](https://console.firebase.google.com/) and create a new project or use an existing one.
-   * In the Project Settings, under **Your apps**, register a new web app and copy the Firebase configuration object.
-   * Open `src/firebase.ts` and replace the placeholder `firebaseConfig` object with your own credentials:
-
-     ```ts
-     const firebaseConfig = {
-       apiKey: "YOUR_API_KEY",
-       authDomain: "YOUR_AUTH_DOMAIN",
-       projectId: "YOUR_PROJECT_ID",
-       storageBucket: "YOUR_STORAGE_BUCKET",
-       messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-       appId: "YOUR_APP_ID"
-     };
-     ```
-   * Enable **Google** sign-in in the **Authentication** section of the Firebase Console.
-   * Create two Firestore collections: `courses` and `lectures`.
-
-4. **Run the development server**
-
-   ```bash
-   npm start
-   ```
-
-   The app will open in development mode at [http://localhost:3000](http://localhost:3000).
-
-### Available Scripts
-
-* `npm start` - Runs the app in development mode.
-* `npm run build` - Builds the app for production into the `build` folder.
-* `npm test` - Runs the test runner.
-* `npm run eject` - Ejects the CRA configuration (irreversible).
-
-## Project Structure
-
-```
-language-tracker
-├── public
-│   ├── index.html       # HTML template
-│   ├── logo.png         # App logo/icon
-│   ├── manifest.json    # PWA manifest (optional)
-│   └── robots.txt       # Robots.txt file
-├── src
-│   ├── components       # Reusable UI components
-│   │   ├── CourseForm.tsx
-│   │   ├── CoursesList.tsx
-│   │   ├── LectureForm.tsx
-│   │   ├── LecturesList.tsx
-│   │   └── Tabs.tsx
-│   ├── contexts         # React context providers
-│   │   ├── AuthContext.tsx
-│   │   ├── CourseServiceContext.tsx
-│   │   └── LectureServiceContext.tsx
-│   ├── hooks            # Custom React hooks
-│   │   ├── useCourses.ts
-│   │   └── useLectures.ts
-│   ├── services         # Abstraction for Firestore operations
-│   │   ├── courseService.ts
-│   │   ├── firestoreCourseService.ts
-│   │   ├── lectureService.ts
-│   │   └── firestoreLectureService.ts
-│   ├── types.ts         # Shared TypeScript interfaces and types
-│   ├── firebase.ts      # Firebase initialization/configuration
-│   ├── App.tsx          # Root component (contains AuthProvider)
-│   ├── MainApp.tsx      # Main application UI after login
-│   ├── index.tsx        # ReactDOM entry point
-│   └── index.css        # Global and theme styles
-├── .gitignore
-├── package.json
-├── tsconfig.json
-└── README.md            # This file
+# 4. Run dev server
+$ npm start
 ```
 
-## Styling and Theming
+> **New packages** (added for drag & drop)
+>
+> ```bash
+> npm i @dnd-kit/core @dnd-kit/sortable @dnd-kit/utilities @dnd-kit/modifiers
+> ```
 
-* Uses CSS variables to define both light and dark theme values in `src/index.css`.
-* The `data-theme` attribute on the `<html>` element toggles between `"light"` and `"dark"`.
-* Components use `var(--variable-name)` throughout for colors, backgrounds, and borders.
+---
 
-## Deployment to Vercel
+## 🔧 Firebase Setup
 
-1. **Push your code to GitHub** (or another Git provider).
-2. **Connect your repository** on [Vercel](https://vercel.com/) (select the Git provider and the project).
-3. **Configure Environment Variables** on Vercel (if any).
-4. **Deploy** using the default build command `npm run build` and output directory `build`.
+1. In the [Firebase Console](https://console.firebase.google.com/) create or select a project.
+2. Register a **Web App** and copy the configuration object into `src/firebase.ts`.
+3. Enable **Google** authentication.
+4. Create collections:
 
-That's it! Your app will be live at `https://<your-project-name>.vercel.app`.
+   * `courses`
+   * `lectures`
 
-## Contributing
+---
 
-Feel free to open issues or submit pull requests. Ensure your code follows the existing style, and include any relevant tests.
+## 📂 Project Structure (excerpt)
+
+```
+src
+├── components
+│   ├── CourseForm.tsx          # add a course
+│   ├── CoursesList.tsx         # accordion + drag‑and‑drop
+│   ├── LectureForm.tsx
+│   └── LecturesList.tsx
+├── services
+│   ├── firestoreCourseService.ts # includes `order` field
+│   └── firestoreLectureService.ts
+└── …
+```
+
+---
+
+## 📝 Contributing
+
+Pull requests are welcome – please follow the existing code style and include tests where relevant.
+
+---
 
 ## License
 
-This project is open source and available under the [MIT License](LICENSE).
+MIT © 2025
